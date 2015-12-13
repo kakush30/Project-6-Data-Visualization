@@ -1,0 +1,46 @@
+---
+title: "Untitled"
+author: "Arpit"
+date: "November 4, 2015"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+#setwd('C:/Users/kaku/Desktop/Project 6')
+df <- read.csv('main_data.csv')
+str(df)
+library(dplyr)
+
+summary(df$date)
+
+
+
+ef <- df %>%
+  group_by(X.month, year, carrier_name) %>%
+  summarize(arrivals = sum(arr_flights),
+            delayed = sum(arr_del15),
+            cancelled = sum(arr_cancelled),
+            diverted = sum(arr_diverted)) %>%
+  transform(on_time = arrivals - delayed)
+
+ef <- ef[complete.cases(ef),]
+
+pf <- ef %>%
+  group_by( year) %>%
+  summarize(arrivals = sum(arrivals),
+            delayed = sum(delayed),
+            cancelled = sum(cancelled),
+            diverted = sum(diverted)) %>%
+  transform(on_time = arrivals - delayed)
+
+
+
+
+write.csv(ff, file="data.csv", row.names=FALSE)
+
+```
+

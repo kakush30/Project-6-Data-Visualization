@@ -1,0 +1,36 @@
+---
+title: "Untitled"
+author: "Arpit"
+date: "November 4, 2015"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+df <- read.csv('1987.csv')
+hour = function(x) { return( substr(x, 0, nchar(x)-2)); }
+hour(913)
+
+library(dplyr)
+
+summary(df$date)
+
+
+
+ef <- df %>%
+  group_by(HOUR = hour(DepTime)) %>%
+  summarize(delays = mean(DepDelay)) 
+
+ef <- ef[complete.cases(ef),]
+ef <-subset(ef,HOUR > 0)
+
+
+
+write.csv(ef, file="new_data.csv", row.names=FALSE)
+```
+
+You can also embed plots, for example:
+

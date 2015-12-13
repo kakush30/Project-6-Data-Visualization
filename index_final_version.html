@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Analysis of RITA Datasets</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  
+    <script src="js/main.js"></script>
+    <script src="js/main2.js"></script>
+    <script src="js/main1.js"></script>
+    <script src="js/main3.js"></script>
+    
+  </head>
+<body>
+  <div class="container">
+    <div class="row">
+    <center><h3><font face="Verdana, Geneva, sans-serif" color="#FF0000">Analysis of RITA Datasets</font></h3></center> 
+      <center><section id="content" class="col-md-12"></section></center>
+      
+       <center>
+         <button id="input1"> Volume of Arrivals</button>  <button id="input2"> Volume of Cancelled Flights</button><button id="input3"> Volume of Diverted Flights</button>
+         <button id="input4"> Flights with On Time Arrivals</button></center>
+      <p> The Airline that always maintained ontime arrival above 90% in period of 2003-2015 is Hawaiian Airlines Inc. By this plot, its clearly looking like Hawaiian Airlines Inc. performing seriously well, and Delta just able to perfrom above 85% in recent years. 
+      
+      But when we check the plot of Volume of Arrivals, this clearly show the reasons of why Hawaiian Airlines performing well. 
+      
+      As an example of year 2013, when Hawaiin Airline performing at 93% On Time Arrival, and Delta Airlines at 85%. But when we see the plot of Volume of Arrivals of same year, the Delta Airlines is at 754K total Arrivals & Hawaiin Airlines at 72K. The Delta Airline total flights arrivals volume is approx 10 times more than Hawaiin. In this sense the Delta is not at all performing bad in comparision to Hawaiin.  
+      
+      <h2>Analysis of RITA datasets of Arrival from 2003 to 2015</h2>
+      <center>
+        <section id="content1" class="col-md-12"></section></center>
+     <center> <font size="-3"> Note: Brown indicate when volume is below 6.0m (Mean:5650802)</font></center>
+      <p>The Bar Plot depicting the Volume of Flights in that year, and line plot depicting delayed flights in that same years. 
+      </br>
+      </br>
+      In the bar plot, color <font color="#00FFFF"> Sky Blue </font> depicting if the volume of flights is above 6.0 m, and <font color="#660099">Purple</font> depicting if volume is below 6.0m. The bar plot clearly depicting the fall in volume of arrivals after the 2008 recession, till year 2015the Arrival Flight Volume not able to attain that level of 2007. </p>
+      <center><section id="content2" class="col-md-12"></section></center>
+           <center> <font size="-3"> Note:  Red indicate when delay is more than 51 min (Mean of Dealys in Departure & Arrival is 51 min)
+          </font></center>
+      <center><button id="input">Arrival/Departure</button></center>
+      <p> The delays in departure is mostly between 10 P.M. to 4 A.M., after that delays are minimal. Similarly, delays in arrival is maximum at 11 P.M. to 4 A.M. This indicating booking tickets for airline that departing &    arriving at night is worst.</p>
+       <center><section id="content3" class="col-md-12"></section></center>
+       <center> <font size="-3"> Note: Red indicate when Volume is below 1.0 million (Mean :1001390)</font></center>
+       <p> Obviosuly during weekends traffic is pretty low, and in bussiness days its high. </p>
+    </div>
+  </div>
+</body>
+</html>

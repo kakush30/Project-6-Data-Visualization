@@ -1,0 +1,146 @@
+---
+title: "Data Analysis of RITA"
+author: "Arpit Kanodia"
+date: "October 11, 2015"
+output: html_document
+---
+## About
+There is 2 data sets that found from [here](http://stat-computing.org/dataexpo/2009/the-data.html) and [here](http://www.transtats.bts.gov/OT_Delay/OT_DelayCause1.asp).
+
+The first dataset is on yearly basis for which I chooses year 1987 and the
+second dataset is describing delay and arrival of flights from 2003-2013 with 
+there causes.
+
+##Inspecting and creating new Datasets for Dataset 1
+
+```{r, echo=FALSE}
+#setwd('C:/Users/kaku/Desktop/Project 6/data')
+df <- read.csv('main_data.csv')
+
+
+library(dplyr)
+df$date <- as.Date(paste(df$year, df$X.month, 1, sep='-'), format="%Y-%m-%d")
+
+
+ef <- df %>%
+  group_by(date, year, carrier_name) %>%
+  summarize(arrivals = sum(arr_flights),
+            delayed = sum(arr_del15),
+            cancelled = sum(arr_cancelled),
+            diverted = sum(arr_diverted)) %>%
+  transform(on_time = 1 - delayed/arrivals)
+
+ef <- ef[complete.cases(ef),]
+
+gf <- ef %>%
+  group_by( year, carrier_name) %>%
+  summarize(arrivals = sum(arrivals),
+            delayed = sum(delayed),
+            cancelled = sum(cancelled),
+            diverted = sum(diverted)) %>%
+  transform(on_time = 1 - delayed/arrivals)
+
+qf <- gf[order(gf$on_time),]
+
+
+
+tf <- subset(gf, gf$carrier_name == 'Hawaiian Airlines Inc.' | 
+               gf$carrier_name == 'Alaska Airlines Inc.' |
+               gf$carrier_name == 'Delta Air Lines Inc.')
+
+nf <- subset(gf, gf$on_time < 0.75)
+
+of <- gf %>%
+  group_by( year, carrier_name = 'Hawaiian Airlines Inc.' ) %>%
+  summarize(arrivals = sum(arrivals),
+            delayed = sum(delayed),
+            cancelled = sum(cancelled),
+            diverted = sum(diverted)) %>%
+  transform(on_time = 1 - delayed/arrivals)
+
+pf <- gf %>%
+  group_by( year) %>%
+  summarize(arrivals = sum(arrivals),
+            delayed = sum(delayed),
+            cancelled = sum(cancelled),
+            diverted = sum(diverted)) %>%
+  transform(on_time = 1 - delayed/arrivals)
+
+
+
+     
+write.csv(tf, file="data1.csv", row.names=FALSE)
+write.csv(pf, file="data2.csv", row.names=FALSE)
+write.csv(nf, file="data5.csv", row.names=FALSE)
+```
+
+###EXploratory Plot for Dataset 1
+
+```{r, echo=FALSE}
+library(ggplot2)
+ggplot(data = ef,
+       aes(x = date, y = delayed)) +
+  geom_line(aes(color = carrier_name))
+```
+
+###Flights Delay on Yearly Basis
+
+```{r, echo=FALSE}
+qplot(x = pf$year,y = pf$delayed,
+      color = I('black'), fill = I('#F79420'),xlab = 'Delayed', geom = "line") +
+      scale_x_continuous(limits = c(2002,2015), breaks = seq(2002,2015,1))
+
+```
+```{r}
+df <- read.csv('2008.csv')
+hour = function(x) { return( substr(x, 0, nchar(x)-2)); }
+hour(913)
+
+library(dplyr)
+library(ggplot2)
+summary(df$date)
+
+
+
+ef <- df %>%
+  group_by(HOUR = hour(DepTime)) %>%
+  summarize(delays_dep = mean(DepDelay)) 
+
+df <- df[complete.cases(df),]
+
+ef <- ef[complete.cases(ef),]
+ef <-subset(ef,HOUR > 0)
+
+
+
+ggplot(data=ef, aes(x=HOUR, y=delays_arr)) + geom_bar(stat='identity') +
+  scale_x_discrete(limits =c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24))
+lf <- df %>%
+  group_by(HOUR = hour(ArrTime)) %>%
+  summarize(delays_arr = mean(ArrDelay)) 
+
+lf <- lf[complete.cases(ef),]
+lf <-subset(lf,HOUR > 0)
+ggplot(data=lf, aes(x=HOUR, y=delays_arr)) + geom_bar(stat='identity')
+kf <- merge(x = ef, y = lf, by = "HOUR", all = TRUE)
+
+write.csv(kf, file="data3.csv", row.names=FALSE)
+
+mf <- df %>%
+  group_by(DayOfWeek = DayOfWeek) %>%
+  summarize(Total_Volume = n()) 
+mf$DayOfWeek[mf$DayOfWeek == 1] <- "Mon"
+mf$DayOfWeek[mf$DayOfWeek == 2] <- "Tue"
+mf$DayOfWeek[mf$DayOfWeek == 3] <- "Wed"
+mf$DayOfWeek[mf$DayOfWeek == 4] <- "Thur"
+mf$DayOfWeek[mf$DayOfWeek == 5] <- "Fri"
+mf$DayOfWeek[mf$DayOfWeek == 6] <- "Sat"
+mf$DayOfWeek[mf$DayOfWeek == 7] <- "Sun"
+
+mf$
+
+ggplot(data=mf, aes(x=DayOfWeek, y=Total_Volume)) + geom_bar(stat='identity')
+
+write.csv(mf, file="data4.csv", row.names=FALSE)
+
+```
